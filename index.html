@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self driving car</title>
+    <link rel="stylesheet" href="./main.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+</head>
+<body>
+    <canvas id="can"></canvas>
+    <div id="verticalButtons">
+        <button title="save the best" onclick="save()">💾</button>
+        <button title="remove the current brain" onclick="discard()">🗑️</button>
+        <button title="reset the race" onclick="location.reload()">🔄️</button>
+    </div>
+    <canvas id="networkCanvas"></canvas>
+
+    <div id="bestcarDiv">
+        <h2 id="bestcartitle">Distance of the best car : 0</h2>
+    </div>
+
+    <script src="./utils.js"></script>
+    <script src="./vizualizer.js"></script>
+    <script src="./network.js"></script>
+    <script src="./sensor.js"></script>
+    <script src="./road.js"></script>
+    <script src="./controls.js"></script>
+    <script src="./car.js"></script>
+    <script src="./index.js"></script>
+
+</body>
+</html>
