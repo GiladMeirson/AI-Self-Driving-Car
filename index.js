@@ -44,20 +44,50 @@ const traffic = generateTraffic(laneCount);
 
 animate();
 
+// function generateTraffic(laneCount) {
+//     const traffic = [];
+//     const carsCount = Math.round(Math.random()*50 +100);
+//     for (let i = 0; i < carsCount; i++) {
+
+//         const laneNum = Math.round(Math.random()*(laneCount-1));
+
+//         const diffDistance = Math.random()>=0.5?-100:-200;
+
+//         traffic.push( new Car(road.getLaneCenter(laneNum), -100+diffDistance*i, 30, 50,'DUMMY',2))
+        
+//     }
+//     return traffic;
+// }
+
 function generateTraffic(laneCount) {
     const traffic = [];
-    const carsCount = Math.round(Math.random()*50 +100);
-    for (let i = 0; i < carsCount; i++) {
+    const carsCount = Math.round(Math.random() * 50 + 100); // Reduce the number of cars
+    const minDistance = 200; // Increase the minimum distance between cars
 
-        const laneNum = Math.round(Math.random()*(laneCount-1));
-
-        const diffDistance = Math.random()>=0.5?-100:-200;
-
-        traffic.push( new Car(road.getLaneCenter(laneNum), -100+diffDistance*i, 30, 50,'DUMMY',2))
-        
+    // Add cars to each lane with larger gaps
+    for (let laneNum = 0; laneNum < laneCount; laneNum++) {
+        let lastY = -100;
+        for (let i = 0; i < carsCount / laneCount; i++) {
+            const diffDistance = Math.random() >= 0.5 ? -minDistance : -minDistance * 2;
+            lastY += diffDistance;
+            traffic.push(new Car(road.getLaneCenter(laneNum), lastY, 30, 50, 'DUMMY', 2));
+        }
     }
+
+    // Randomly add more cars to increase density slightly
+    for (let i = 0; i < carsCount / 2; i++) {
+        const laneNum = Math.floor(Math.random() * laneCount);
+        const diffDistance = Math.random() >= 0.5 ? -minDistance : -minDistance * 2;
+        const lastCar = traffic.filter(car => car.lane === laneNum).pop();
+        const newY = lastCar ? lastCar.y + diffDistance : -100 + diffDistance * i;
+
+        traffic.push(new Car(road.getLaneCenter(laneNum), newY, 30, 50, 'DUMMY', 2));
+    }
+
     return traffic;
 }
+
+
 
 function save(){
     localStorage.setItem('bestBrain',JSON.stringify(bestCar.brain));
@@ -72,7 +102,8 @@ function discard(){
 function generateCars(N) {
     const cars = [];
     for (let i = 1; i <= N; i++) {
-        cars.push(new Car(road.getLaneCenter(1), 100, 30, 50,'AI'));
+        const lane = Math.round(Math.random()*(laneCount-1));
+        cars.push(new Car(road.getLaneCenter(lane), 100, 30, 50,'AI'));
     }
     return cars;
 
